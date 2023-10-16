@@ -1,0 +1,1 @@
+java -jar C:\Users\Griffty\Desktop\my\work\coding\Java\StockTracker\target\GrifftyStockTracker.jar server
