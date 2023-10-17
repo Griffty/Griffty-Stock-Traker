@@ -2,14 +2,14 @@ package org.example.DiscordRequestHandlers;
 
 import org.example.SensitiveInformation;
 
-public class HelpCommand extends ResponseCommandAdapter {
-    public HelpCommand(String commandId) {
+public class HelpCommandAction extends CommandAdapterAction {
+    public HelpCommandAction(String commandId) {
         super(commandId);
     }
 
     @Override
-    public CommandResponse execute() {
+    public ActionResponce execute() {
         successAnswer = SensitiveInformation.helpInfo;
-        return CommandResponse.SUCCESS;
+        return ActionResponce.SUCCESS;
     }
 }

@@ -1,6 +1,6 @@
 package org.example.DiscordRequestHandlers;
 
-public enum CommandResponse {
+public enum ActionResponce {
     SUCCESS,
     FAIL,
     NO_ACTION,

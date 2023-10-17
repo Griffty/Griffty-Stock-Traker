@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.example.DiscordRequestHandlers.*;
+import org.example.DiscordRequestHandlers.Buttons.ButtonActionHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,35 +34,8 @@ public class ServerInterface extends ProgramInterface{
             commandData.add(data);
         }
         api.updateCommands().addCommands(commandData).queue();
-        api.addEventListener(CommandHandler.getInstance());
-//        api.updateCommands().addCommands(
-//                Commands.slash("register", "Register yourself in a system."),
-//                Commands.slash("stock_help", "Get help in using me."),
-//
-//                Commands.slash("subscribed_stocks", "Shows prices of all stocks you are subscribed to."),
-//                Commands.slash("add_stock", "Adds stock to your subscription list.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to add.", true),
-//                Commands.slash("remove_stock", "Removes stock from your subscription list.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to remove.", true, true),
-//
-//                Commands.slash("owned_stocks", "Shows list of all stocks you have in property."),
-//                Commands.slash("buy_stock", "Buy some stocks.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to buy.", true)
-//                        .addOption(OptionType.INTEGER, "amount", "How much stock you want to buy.", true),
-//                Commands.slash("sell_stock", "Sell some stocks.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to sell.", true, true)
-//                        .addOption(OptionType.INTEGER, "amount", "How much stock you want to sell.", true, true),
-//
-//                Commands.slash("get_stock", "Shows price of specified stock.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to check.", true),
-//                Commands.slash("stock_news", "Show last news about specific stock.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to check.", true)
-//                        .addOption(OptionType.STRING, "amount", "How many articles you want to get.", true),
-//                Commands.slash("admin", "admin commands").
-//                        addOption(OptionType.STRING, "parameters", "admin parameters", true),
-//
-//                Commands.slash("get_money", "Show current money.")
-//                ).queue();
+        api.addEventListener(CommandActionHandler.getInstance());
+        api.addEventListener(ButtonActionHandler.getInstance());
     }
 
     private void createCommands() {
@@ -112,19 +86,19 @@ public class ServerInterface extends ProgramInterface{
                 }));
             }
         };
-        CommandHandler.getInstance().registerNewCommand(new RegisterCommand("register"))
-                .registerNewCommand(new HelpCommand("help"))
-                .registerNewCommand(new GetMoneyCommand("get_money"))
-                .registerNewCommand(new GetStockCommand("get_stock"))
-                .registerNewCommand(new GetNewsCommand("stock_news"))
-                .registerNewCommand(new GetSubscribedStocksCommand("subscribed_stocks"))
-                .registerNewCommand(new AddSubscribedStockCommand("add_stock"))
-                .registerNewCommand(new RemoveSubscribedStockCommand("remove_stock"))
-                .registerNewCommand(new GetOwnedStocksCommand("owned_stocks"))
-                .registerNewCommand(new BuyStockCommand("buy_stock"))
-                .registerNewCommand(new SellStockCommand("sell_stock"))
+        CommandActionHandler.getInstance().registerNewCommand(new RegisterCommandAction("register"))
+                .registerNewCommand(new HelpCommandAction("help"))
+                .registerNewCommand(new GetMoneyCommandAction("get_money"))
+                .registerNewCommand(new GetStockCommandAction("get_stock"))
+                .registerNewCommand(new GetNewsCommandAction("stock_news"))
+                .registerNewCommand(new GetSubscribedStocksCommandAction("subscribed_stocks"))
+                .registerNewCommand(new AddSubscribedStockCommandAction("add_stock"))
+                .registerNewCommand(new RemoveSubscribedStockCommandAction("remove_stock"))
+                .registerNewCommand(new GetOwnedStocksCommandAction("owned_stocks"))
+                .registerNewCommand(new BuyStockCommandAction("buy_stock"))
+                .registerNewCommand(new SellStockCommandAction("sell_stock"))
 
-                .registerNewCommand(new MenuCommand("menu"));
+                .registerNewCommand(new MenuCommandAction("menu"));
     }
     public List<CommandOption> getOptionsForCommand(String commandId){
         for (SlashCommandStructure structure : supportedResponseCommands){

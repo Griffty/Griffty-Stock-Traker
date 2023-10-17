@@ -3,17 +3,17 @@ package org.example.DiscordRequestHandlers;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.requests.RestAction;
 
-public abstract class ResponseCommandAdapter extends AbstractResponseCommand{
+public abstract class CommandAdapterAction extends AbstractCommandAction {
     protected String successAnswer;
     protected String failAnswer;
     protected String noActionAnswer;
-    public ResponseCommandAdapter(String commandId) {
+    public CommandAdapterAction(String commandId) {
         super(commandId);
     }
 
     @Override
-    protected RestAction<Message> finish(CommandResponse commandResponse) {
-        switch (commandResponse){
+    protected RestAction<Message> finish(ActionResponce actionResponce) {
+        switch (actionResponce){
             case SUCCESS -> {
                 return getInteractionHook().sendMessage(pingUser() + successAnswer);
             }

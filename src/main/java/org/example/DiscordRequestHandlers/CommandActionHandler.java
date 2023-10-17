@@ -10,23 +10,24 @@ import org.example.users.BotUser;
 import java.util.HashSet;
 import java.util.List;
 
-public class CommandHandler extends ListenerAdapter {
-    private static CommandHandler self;
-    private final HashSet<AbstractResponseCommand> abstractResponseCommands = new HashSet<>();
-    public static CommandHandler getInstance() {
+public class CommandActionHandler extends ListenerAdapter {
+    private static CommandActionHandler self;
+    private final HashSet<AbstractCommandAction> abstractCommandActions = new HashSet<>();
+    public static CommandActionHandler getInstance() {
         if (self == null){
-            self = new CommandHandler();
+            self = new CommandActionHandler();
         }
         return self;
     }
-    public CommandHandler registerNewCommand(AbstractResponseCommand command){
-        abstractResponseCommands.add(command);
+    private CommandActionHandler(){}
+    public CommandActionHandler registerNewCommand(AbstractCommandAction command){
+        abstractCommandActions.add(command);
         return this;
     }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        AbstractResponseCommand command = getResponseCommand(event);
+        AbstractCommandAction command = getCommandAction(event);
         if (command == null){
             event.reply("Cannot find specified command").queue();
             return;
@@ -36,8 +37,8 @@ public class CommandHandler extends ListenerAdapter {
             event.reply("Time Out Error, try again in few seconds").setEphemeral(true).queue();
             return;
         }
-        event.deferReply(command.isEphemeral).queue();
-        if (command instanceof RegisterCommand){
+        event.deferReply(command.isEphemeral()).queue();
+        if (command instanceof RegisterCommandAction){
             command.build(null, event.getHook());
             return;
         }
@@ -73,10 +74,10 @@ public class CommandHandler extends ListenerAdapter {
         return JsonSaveHandler.getInstance().deserializeUser(user.getName(), user.getId());
     }
 
-    private AbstractResponseCommand getResponseCommand(SlashCommandInteractionEvent event) {
-        AbstractResponseCommand responseCommand = null;
+    private AbstractCommandAction getCommandAction(SlashCommandInteractionEvent event) {
+        AbstractCommandAction responseCommand = null;
         List<CommandOption> options = null;
-        for(AbstractResponseCommand command : abstractResponseCommands){
+        for(AbstractCommandAction command : abstractCommandActions){
             if (command.getCommandId().equals(event.getName())){
                 responseCommand = command.createCopy();
                 if (responseCommand == null){
