@@ -1,6 +1,6 @@
 package org.example.DiscordRequestHandlers;
 
-public class RemoveSubscribedStockCommandAction extends CommandAdapterAction {
+public class RemoveSubscribedStockCommandAction extends CommandActionAdapter {
     public RemoveSubscribedStockCommandAction(String commandId) {
         super(commandId);
     }

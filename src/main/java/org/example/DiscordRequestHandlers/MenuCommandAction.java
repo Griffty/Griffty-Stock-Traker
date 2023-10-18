@@ -54,8 +54,8 @@ public class MenuCommandAction extends AbstractCommandAction {
                 .addField("Balance:", String.format("%.2f", getBotUser().getMoney()).replace(",", ".") +"$", true)
                 .addField("Subscribed Stocks:", sO.toString(), false);
 
-        Button buyButton = Button.primary(getBotUser().discordId+"_BuysStock", "Buy").asEnabled();
-        Button sellButton = Button.danger(getBotUser().discordId+"_SellStock", "Sell").asEnabled();
+        Button buyButton = Button.primary("?"+"_"+"buyStockMenuB", "Buy").asEnabled();
+        Button sellButton = Button.danger("?"+"_"+"sellStockB", "Sell").asEnabled();
         addedComponents.add(buyButton);
         addedComponents.add(sellButton);
         System.out.println(addedComponents);

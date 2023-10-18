@@ -32,14 +32,20 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
-        System.out.println("here");
-        event.reply("").setEphemeral(true).queue(); // we can use this as empty reply
-
+         // we can use this as empty reply
         List<String> idSplit = List.of(event.getButton().getId().split("_"));
+
+        if (!idSplit.get(0).equals("?")){
+            event.reply("Actions with specified user aren't currently supported").queue();
+        }
         AbstractButtonAction action = getButtonAction(idSplit.get(1));
+
         if (action == null){
             event.reply("Cannot find specified command").queue();
             return;
+        }
+        if (!(action instanceof AbstractButtonModalAction)){
+            event.deferReply().queue();
         }
         if (delayIfUserInSystem(event.getUser().getId())){
             event.reply("Time Out Error, try again in few seconds").setEphemeral(true).queue();
@@ -50,11 +56,13 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
             event.getHook().sendMessage("You are not registered. Type /registered to fix it.").setEphemeral(true).queue();
             return;
         }
-        action.build(user, event.getHook());
+
+        action.build(user, event);
+
     }
     private boolean delayIfUserInSystem(String id) {
         int sleepCycle = 0;
-        while (isUserInSystem(id) && sleepCycle < 40){ // for optimization can add is user registered true, bcs if he is deserialized he must be registered.
+        while (isUserInSystem(id) && sleepCycle < 20){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -82,7 +90,6 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
     }
     public static RestAction<Message> buildMessageWithActionRows(WebhookMessageCreateAction<Message> messageCreateAction, List<ItemComponent> components){
         List<ItemComponent> row = new ArrayList<>();
-        System.out.println("here");
         for (int i = 0; i < components.size(); i++){
             if (i % 5 == 0 && i != 0){
                 System.out.println(row);
@@ -92,7 +99,6 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
             if (components.get(i) == null){
                 continue;
             }
-            System.out.println("add");
             row.add(components.get(i));
             if (i == components.size()-1 && i % 5 != 0){
                 messageCreateAction.addActionRow(row);

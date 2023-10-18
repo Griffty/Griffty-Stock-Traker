@@ -4,7 +4,7 @@ import org.example.HTTPHandler;
 import org.example.Stock;
 import org.example.StockPack;
 
-public class GetOwnedStocksCommandAction extends CommandAdapterAction {
+public class GetOwnedStocksCommandAction extends CommandActionAdapter {
     public GetOwnedStocksCommandAction(String commandId) {
         super(commandId);
     }

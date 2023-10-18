@@ -2,7 +2,7 @@ package org.example.DiscordRequestHandlers;
 
 import org.example.SensitiveInformation;
 
-public class HelpCommandAction extends CommandAdapterAction {
+public class HelpCommandAction extends CommandActionAdapter {
     public HelpCommandAction(String commandId) {
         super(commandId);
     }

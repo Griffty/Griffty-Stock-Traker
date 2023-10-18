@@ -3,7 +3,7 @@ package org.example.DiscordRequestHandlers;
 import org.example.JsonSaveHandler;
 import org.example.users.BotUser;
 
-public class RegisterCommandAction extends CommandAdapterAction {
+public class RegisterCommandAction extends CommandActionAdapter {
     public RegisterCommandAction(String commandId) {
         super(commandId);
     }

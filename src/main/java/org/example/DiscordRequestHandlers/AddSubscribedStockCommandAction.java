@@ -2,7 +2,7 @@ package org.example.DiscordRequestHandlers;
 
 import org.example.HTTPHandler;
 
-public class AddSubscribedStockCommandAction extends CommandAdapterAction {
+public class AddSubscribedStockCommandAction extends CommandActionAdapter {
     public AddSubscribedStockCommandAction(String commandID) {
         super(commandID);
     }

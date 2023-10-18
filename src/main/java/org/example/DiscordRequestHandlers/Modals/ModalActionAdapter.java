@@ -1,18 +1,21 @@
-package org.example.DiscordRequestHandlers;
+package org.example.DiscordRequestHandlers.Modals;
 
-import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.requests.RestAction;
+import org.example.DiscordRequestHandlers.ActionResponce;
 
-public abstract class CommandAdapterAction extends AbstractCommandAction {
+import java.util.List;
+
+public abstract class ModalActionAdapter extends AbstractModalAction{
     protected String successAnswer;
     protected String failAnswer;
     protected String noActionAnswer;
-    public CommandAdapterAction(String commandId) {
-        super(commandId);
+    protected ModalActionAdapter(String actionId, List<String> requiredOptions) {
+        super(actionId, requiredOptions);
     }
 
     @Override
-    protected RestAction<Message> finish(ActionResponce actionResponce) {
+    protected RestAction finish(ActionResponce actionResponce) {
         switch (actionResponce){
             case SUCCESS -> {
                 return getInteractionHook().sendMessage(pingUser() + successAnswer);
@@ -26,7 +29,6 @@ public abstract class CommandAdapterAction extends AbstractCommandAction {
         }
         return null;
     }
-
     @Override
     protected void clear() {
 

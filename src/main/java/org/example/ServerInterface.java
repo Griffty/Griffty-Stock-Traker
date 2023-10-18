@@ -7,6 +7,9 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.example.DiscordRequestHandlers.*;
 import org.example.DiscordRequestHandlers.Buttons.ButtonActionHandler;
+import org.example.DiscordRequestHandlers.Buttons.BuyStockMenuButton;
+import org.example.DiscordRequestHandlers.Modals.BuyStockModalAction;
+import org.example.DiscordRequestHandlers.Modals.ModalActionHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +39,7 @@ public class ServerInterface extends ProgramInterface{
         api.updateCommands().addCommands(commandData).queue();
         api.addEventListener(CommandActionHandler.getInstance());
         api.addEventListener(ButtonActionHandler.getInstance());
+        api.addEventListener(ModalActionHandler.getInstance());
     }
 
     private void createCommands() {
@@ -99,6 +103,10 @@ public class ServerInterface extends ProgramInterface{
                 .registerNewCommand(new SellStockCommandAction("sell_stock"))
 
                 .registerNewCommand(new MenuCommandAction("menu"));
+
+        ButtonActionHandler.getInstance().registerNewButtonAction(new BuyStockMenuButton("buyStockMenuB"));
+
+        ModalActionHandler.getInstance().registerNewModalAction(new BuyStockModalAction("buyStockM", List.of("symbol", "amount")));
     }
     public List<CommandOption> getOptionsForCommand(String commandId){
         for (SlashCommandStructure structure : supportedResponseCommands){

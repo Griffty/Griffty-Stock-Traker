@@ -4,7 +4,7 @@ import org.example.WebScraper;
 
 import java.util.ArrayList;
 
-public class GetNewsCommandAction extends CommandAdapterAction {
+public class GetNewsCommandAction extends CommandActionAdapter {
     public GetNewsCommandAction(String commandID) {
         super(commandID);
     }

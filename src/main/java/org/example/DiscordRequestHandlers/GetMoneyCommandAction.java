@@ -1,6 +1,6 @@
 package org.example.DiscordRequestHandlers;
 
-public class GetMoneyCommandAction extends CommandAdapterAction {
+public class GetMoneyCommandAction extends CommandActionAdapter {
     public GetMoneyCommandAction(String commandId) {
         super(commandId);
     }

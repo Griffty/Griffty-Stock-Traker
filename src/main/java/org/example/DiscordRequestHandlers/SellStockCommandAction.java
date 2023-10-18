@@ -3,7 +3,7 @@ package org.example.DiscordRequestHandlers;
 import org.example.Stock;
 import org.example.TradeHandler;
 
-public class SellStockCommandAction extends CommandAdapterAction {
+public class SellStockCommandAction extends CommandActionAdapter {
 
     public SellStockCommandAction(String commandId) {
         super(commandId);

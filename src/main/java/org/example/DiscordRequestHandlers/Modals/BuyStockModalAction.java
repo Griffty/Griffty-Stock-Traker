@@ -1,17 +1,22 @@
-package org.example.DiscordRequestHandlers;
+package org.example.DiscordRequestHandlers.Modals;
 
+import net.dv8tion.jda.api.requests.RestAction;
+import org.example.DiscordRequestHandlers.ActionResponce;
 import org.example.Stock;
 import org.example.TradeHandler;
 
-public class BuyStockCommandAction extends CommandActionAdapter {
-    public BuyStockCommandAction(String commandId) {
-        super(commandId);
+import java.util.List;
+
+public class BuyStockModalAction extends ModalActionAdapter{
+
+    public BuyStockModalAction(String actionId, List<String> requiredOptions) {
+        super(actionId, requiredOptions);
     }
 
     @Override
     public ActionResponce execute() {
-        String symbol = getOptions().get(0).getValue().getAsString();
-        int amount = getOptions().get(1).getValue().getAsInt();
+        String symbol = getOption("symbol");
+        int amount = Integer.parseInt(getOption("amount"));
 
         int ans = TradeHandler.getInstance().buyStock(getBotUser(), new Stock(symbol, amount));
         if (ans == -2){
