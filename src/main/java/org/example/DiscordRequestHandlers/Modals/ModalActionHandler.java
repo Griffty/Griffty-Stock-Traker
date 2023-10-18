@@ -3,12 +3,10 @@ package org.example.DiscordRequestHandlers.Modals;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.example.DiscordRequestHandlers.CommandOption;
 import org.example.JsonSaveHandler;
 import org.example.users.BotUser;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class ModalActionHandler extends ListenerAdapter {
     private static ModalActionHandler self;
@@ -21,8 +19,9 @@ public class ModalActionHandler extends ListenerAdapter {
     }
     private ModalActionHandler(){}
 
-    public void registerNewModalAction(AbstractModalAction modalAction) {
+    public ModalActionHandler registerNewModalAction(AbstractModalAction modalAction) {
         abstractModalActions.add(modalAction);
+        return this;
     }
     @Override
     public void onModalInteraction(ModalInteractionEvent event) {
@@ -72,6 +71,7 @@ public class ModalActionHandler extends ListenerAdapter {
         AbstractModalAction responseAction = null;
         String modalId = event.getModalId().split("_")[1];
         for(AbstractModalAction action : abstractModalActions) {
+            System.out.println(action.getActionId() + " " +modalId);
             if (action.getActionId().equals(modalId)) {
                 responseAction = action.createCopy();
                 break;

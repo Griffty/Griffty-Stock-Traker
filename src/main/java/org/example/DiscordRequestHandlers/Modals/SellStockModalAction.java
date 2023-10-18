@@ -1,18 +1,20 @@
-package org.example.DiscordRequestHandlers;
+package org.example.DiscordRequestHandlers.Modals;
 
+import org.example.DiscordRequestHandlers.ActionResponce;
 import org.example.Stock;
 import org.example.TradeHandler;
 
-public class SellStockCommandAction extends CommandActionAdapter {
+import java.util.List;
 
-    public SellStockCommandAction(String commandId) {
-        super(commandId);
+public class SellStockModalAction extends ModalActionAdapter{
+    public SellStockModalAction(String actionId, List<String> requiredOptions) {
+        super(actionId, requiredOptions);
     }
 
     @Override
     public ActionResponce execute() {
-        String symbol = getOptions().get(0).getValue().getAsString();
-        int amount = getOptions().get(1).getValue().getAsInt();
+        String symbol = getOption("symbol");
+        int amount = Integer.parseInt(getOption("amount"));
 
         int ans = TradeHandler.getInstance().sellStock(getBotUser(), new Stock(symbol, amount));
         if (ans == -3){

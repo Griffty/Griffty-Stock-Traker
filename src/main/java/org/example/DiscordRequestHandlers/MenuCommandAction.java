@@ -55,7 +55,7 @@ public class MenuCommandAction extends AbstractCommandAction {
                 .addField("Subscribed Stocks:", sO.toString(), false);
 
         Button buyButton = Button.primary("?"+"_"+"buyStockMenuB", "Buy").asEnabled();
-        Button sellButton = Button.danger("?"+"_"+"sellStockB", "Sell").asEnabled();
+        Button sellButton = Button.danger("?"+"_"+"sellStockMenuB", "Sell").asEnabled();
         addedComponents.add(buyButton);
         addedComponents.add(sellButton);
         System.out.println(addedComponents);

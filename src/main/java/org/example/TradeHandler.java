@@ -28,7 +28,11 @@ public class TradeHandler {
     }
     public int sellStock(BotUser user, Stock stock){
         float stockPrice = HTTPHandler.getInstance().getStockPrice(stock.symbol);
-        float currentAmount = user.getStockInProperty(stock.symbol).amount;
+        Stock stockInPack = user.getStockInProperty(stock.symbol);
+        if (stockInPack == null){
+            return -3;
+        }
+        float currentAmount = stockInPack.amount;
         if (stockPrice == -1){
             return -2;
         }
