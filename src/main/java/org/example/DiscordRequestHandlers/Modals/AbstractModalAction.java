@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.example.DiscordRequestHandlers.ActionResponce;
+import org.example.DiscordRequestHandlers.Commands.ActionResponce;
 import org.example.JsonSaveHandler;
 import org.example.users.BotUser;
 

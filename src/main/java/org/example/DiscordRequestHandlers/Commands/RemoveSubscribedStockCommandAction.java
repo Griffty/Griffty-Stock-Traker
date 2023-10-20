@@ -1,4 +1,4 @@
-package org.example.DiscordRequestHandlers;
+package org.example.DiscordRequestHandlers.Commands;
 
 public class RemoveSubscribedStockCommandAction extends CommandActionAdapter {
     public RemoveSubscribedStockCommandAction(String commandId) {

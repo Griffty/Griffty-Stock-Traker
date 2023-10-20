@@ -1,4 +1,4 @@
-package org.example.DiscordRequestHandlers;
+package org.example.DiscordRequestHandlers.Commands;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.InteractionHook;
@@ -9,6 +9,7 @@ import org.example.users.BotUser;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public abstract class AbstractCommandAction extends Command{
     private BotUser user;
@@ -79,8 +80,6 @@ public abstract class AbstractCommandAction extends Command{
     protected String pingUser(){
         return "<@" + getBotUser().discordId + "> ";
     }
-
-
 
     public AbstractCommandAction createCopy() {
         try {

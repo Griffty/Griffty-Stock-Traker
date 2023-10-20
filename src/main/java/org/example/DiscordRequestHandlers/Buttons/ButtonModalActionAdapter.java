@@ -1,9 +1,8 @@
 package org.example.DiscordRequestHandlers.Buttons;
 
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.example.DiscordRequestHandlers.ActionResponce;
+import org.example.DiscordRequestHandlers.Commands.ActionResponce;
 
 public abstract class ButtonModalActionAdapter extends AbstractButtonModalAction{
 

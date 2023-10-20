@@ -1,7 +1,6 @@
 package org.example.DiscordRequestHandlers.Modals;
 
-import net.dv8tion.jda.api.requests.RestAction;
-import org.example.DiscordRequestHandlers.ActionResponce;
+import org.example.DiscordRequestHandlers.Commands.ActionResponce;
 import org.example.Stock;
 import org.example.TradeHandler;
 

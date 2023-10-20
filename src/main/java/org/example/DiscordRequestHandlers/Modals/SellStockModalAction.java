@@ -1,6 +1,6 @@
 package org.example.DiscordRequestHandlers.Modals;
 
-import org.example.DiscordRequestHandlers.ActionResponce;
+import org.example.DiscordRequestHandlers.Commands.ActionResponce;
 import org.example.Stock;
 import org.example.TradeHandler;
 

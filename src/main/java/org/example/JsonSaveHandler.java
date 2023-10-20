@@ -25,7 +25,9 @@ public class JsonSaveHandler {
         return self;
     }
 
+
     private JsonSaveHandler(){
+        // Json handler constructor
         String saveDirectory1 = null;
         if (System.getProperty("os.name").contains("Linux")){
             saveDirectory1 = SensitiveInformation.LinuxSaveDir;

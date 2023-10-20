@@ -1,8 +1,7 @@
 package org.example.DiscordRequestHandlers.Modals;
 
-import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.example.DiscordRequestHandlers.ActionResponce;
+import org.example.DiscordRequestHandlers.Commands.ActionResponce;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.example.DiscordRequestHandlers;
+package org.example.DiscordRequestHandlers.Commands;
 
 import org.example.JsonSaveHandler;
 import org.example.users.BotUser;
