@@ -3,7 +3,7 @@ package org.example.DiscordRequestHandlers.Commands;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.example.JsonSaveHandler;
+import org.example.FileHandler;
 import org.example.users.BotUser;
 
 import java.lang.reflect.Constructor;
@@ -20,7 +20,7 @@ public abstract class AbstractCommandAction extends Command{
     public AbstractCommandAction(String commandId) {
         super(commandId);
     }
-    public void build(BotUser user, InteractionHook hook){
+    public RestAction<Message> build(BotUser user, InteractionHook hook){
         this.user = user;
         this.hook = hook;
 
@@ -28,17 +28,18 @@ public abstract class AbstractCommandAction extends Command{
         if (actionResponce == null){
             //SaveError;
             hook.sendMessage(getBotUser() + " Sorry but I can handle this command, contact developers for fix").queue();
-            return;
+            return null;
         }
         RestAction<Message> response = finish(actionResponce);
         if (response == null){
             //SaveError;
             hook.sendMessage(getBotUser() + " Sorry but something unexpected happened, contact developers for fix").queue();
-            return;
+            return null;
         }
-        response.queue();
+        System.out.println(response);
         serialize();
         clear();
+        return response;
     }
     public abstract ActionResponce execute();
     protected abstract RestAction<Message> finish(ActionResponce actionResponce);
@@ -50,7 +51,14 @@ public abstract class AbstractCommandAction extends Command{
         options.add(answer);
     }
     protected void serialize(){
-        JsonSaveHandler.getInstance().serializeUser(user);
+        if (!getCommandId().equals("register")){
+            return;
+        }
+        if (user==null){
+            System.out.println("Trying to serialize null user");
+            return;
+        }
+        FileHandler.getInstance().serializeUser(user);
     }
 
     protected boolean isEphemeral() {

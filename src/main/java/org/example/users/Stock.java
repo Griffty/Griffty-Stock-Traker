@@ -1,9 +1,9 @@
-package org.example;
+package org.example.users;
 
 public class Stock {
-    String symbol = "";
-    int amount = 0;
-    Stock(){
+    protected String symbol = "";
+    protected int amount = 0;
+    public Stock(){
     }
     Stock(String s){
         symbol = s;

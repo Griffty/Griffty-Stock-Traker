@@ -1,8 +1,6 @@
 package org.example.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.example.Stock;
-import org.example.StockPack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +9,6 @@ public class BotUser {
     public String discordId;
     public String name;
     public ArrayList<String> subscribedStocks;
-
     private StockPack stocksInProperty = new StockPack();
     private float money = 0;
     public BotUser(){

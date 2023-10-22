@@ -1,7 +1,7 @@
 package org.example.DiscordRequestHandlers.Modals;
 
 import org.example.DiscordRequestHandlers.Commands.ActionResponce;
-import org.example.Stock;
+import org.example.users.Stock;
 import org.example.TradeHandler;
 
 import java.util.List;

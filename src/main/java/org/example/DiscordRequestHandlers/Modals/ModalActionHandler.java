@@ -3,7 +3,7 @@ package org.example.DiscordRequestHandlers.Modals;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.example.JsonSaveHandler;
+import org.example.FileHandler;
 import org.example.users.BotUser;
 
 import java.util.HashSet;
@@ -31,7 +31,7 @@ public class ModalActionHandler extends ListenerAdapter {
             return;
         }
 
-        if (delayIfUserInSystem(event.getUser().getId())){
+        if (delayIfUserInSystem(event.getUser().getName())){
             event.reply("Time Out Error, try again in few seconds").setEphemeral(true).queue();
             return;
         }
@@ -45,9 +45,9 @@ public class ModalActionHandler extends ListenerAdapter {
 
     }
 
-    private boolean delayIfUserInSystem(String id) {
+    private boolean delayIfUserInSystem(String name) {
         int sleepCycle = 0;
-        while (isUserInSystem(id) && sleepCycle < 40){ // for optimization can add is user registered true, bcs if he is deserialized he must be registered.
+        while (isUserInSystem(name) && sleepCycle < 40){ // for optimization can add is user registered true, bcs if he is deserialized he must be registered.
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -59,12 +59,12 @@ public class ModalActionHandler extends ListenerAdapter {
         return sleepCycle == 40;
     }
 
-    private boolean isUserInSystem(String id) {
-        return JsonSaveHandler.getInstance().isUserInSystem(id);
+    private boolean isUserInSystem(String name) {
+        return FileHandler.getInstance().isUserInSystem(name);
     }
 
     private BotUser getBotUser(User user) {
-        return JsonSaveHandler.getInstance().deserializeUser(user.getName(), user.getId());
+        return FileHandler.getInstance().deserializeUser(user.getName(), user.getId());
     }
 
     private AbstractModalAction getModalAction(ModalInteractionEvent event) {

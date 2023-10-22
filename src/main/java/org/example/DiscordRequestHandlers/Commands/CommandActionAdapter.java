@@ -13,6 +13,7 @@ public abstract class CommandActionAdapter extends AbstractCommandAction {
 
     @Override
     protected RestAction<Message> finish(ActionResponce actionResponce) {
+        System.out.println("answering");
         switch (actionResponce){
             case SUCCESS -> {
                 return getInteractionHook().sendMessage(pingUser() + successAnswer);

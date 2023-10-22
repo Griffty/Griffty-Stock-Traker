@@ -4,11 +4,10 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.components.ItemComponent;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
-import org.example.JsonSaveHandler;
+import org.example.FileHandler;
 import org.example.users.BotUser;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
         if (!(action instanceof AbstractButtonModalAction)){
             event.deferReply().queue();
         }
-        if (delayIfUserInSystem(event.getUser().getId())){
+        if (delayIfUserInSystem(event.getUser().getName())){
             event.reply("Time Out Error, try again in few seconds").setEphemeral(true).queue();
             return;
         }
@@ -58,11 +57,10 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
         }
 
         action.build(user, event);
-
     }
-    private boolean delayIfUserInSystem(String id) {
+    private boolean delayIfUserInSystem(String name) {
         int sleepCycle = 0;
-        while (isUserInSystem(id) && sleepCycle < 20){
+        while (isUserInSystem(name) && sleepCycle < 20){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -74,11 +72,11 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
         return sleepCycle == 40;
     }
 
-    private boolean isUserInSystem(String id) {
-        return JsonSaveHandler.getInstance().isUserInSystem(id);
+    private boolean isUserInSystem(String name) {
+        return FileHandler.getInstance().isUserInSystem(name);
     }
     private BotUser getBotUser(User user) {
-        return JsonSaveHandler.getInstance().deserializeUser(user.getName(), user.getId());
+        return FileHandler.getInstance().deserializeUser(user.getName(), user.getId());
     }
     private AbstractButtonAction getButtonAction(String actionId) {
         for (AbstractButtonAction action : abstractButtonActions) {

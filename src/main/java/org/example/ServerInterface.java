@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.example.DiscordRequestHandlers.Buttons.ButtonActionHandler;
 import org.example.DiscordRequestHandlers.Buttons.BuyStockMenuButton;
+import org.example.DiscordRequestHandlers.Buttons.GetLatestTransactionButtonAction;
 import org.example.DiscordRequestHandlers.Buttons.SellStockMenuButton;
 import org.example.DiscordRequestHandlers.Commands.*;
 import org.example.DiscordRequestHandlers.Modals.BuyStockModalAction;
@@ -47,8 +48,6 @@ public class ServerInterface extends ProgramInterface{
     private void createCommands() {
         supportedResponseCommands = new HashSet<>(){
             {
-                add(new SlashCommandStructure("menu", "Open user menu.", null));
-
                 add(new SlashCommandStructure("register", "Register yourself in a system.", null));
                 add(new SlashCommandStructure("help", "Get help in using me.", null));
                 add(new SlashCommandStructure("get_money", "shows current money", null));
@@ -90,6 +89,9 @@ public class ServerInterface extends ProgramInterface{
                         add(new CommandOption(OptionType.INTEGER, "amount", "How much you want to sell.", true, false));
                     }
                 }));
+
+                add(new SlashCommandStructure("menu", "Open user menu.", null));
+                add(new SlashCommandStructure("get_transactions", "Get list of your latest transactions", null));
             }
         };
         CommandActionHandler.getInstance().registerNewCommand(new RegisterCommandAction("register"))
@@ -104,10 +106,12 @@ public class ServerInterface extends ProgramInterface{
                 .registerNewCommand(new BuyStockCommandAction("buy_stock"))
                 .registerNewCommand(new SellStockCommandAction("sell_stock"))
 
-                .registerNewCommand(new MenuCommandAction("menu"));
+                .registerNewCommand(new MenuCommandAction("menu"))
+                .registerNewCommand(new GetLastTransactionsCommandAction("get_transactions"));
 
         ButtonActionHandler.getInstance().registerNewButtonAction(new BuyStockMenuButton("buyStockMenuB"))
-                .registerNewButtonAction(new SellStockMenuButton("sellStockMenuB"));
+                .registerNewButtonAction(new SellStockMenuButton("sellStockMenuB"))
+                .registerNewButtonAction(new GetLatestTransactionButtonAction("getLatestTransactionB"));
 
         ModalActionHandler.getInstance().registerNewModalAction(new BuyStockModalAction("buyStockM", List.of("symbol", "amount")))
                 .registerNewModalAction(new SellStockModalAction("sellStockM", List.of("symbol", "amount")));

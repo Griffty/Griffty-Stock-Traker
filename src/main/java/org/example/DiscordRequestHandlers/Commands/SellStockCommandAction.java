@@ -1,6 +1,6 @@
 package org.example.DiscordRequestHandlers.Commands;
 
-import org.example.Stock;
+import org.example.users.Stock;
 import org.example.TradeHandler;
 
 public class SellStockCommandAction extends CommandActionAdapter {

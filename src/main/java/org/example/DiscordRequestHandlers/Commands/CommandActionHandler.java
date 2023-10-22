@@ -3,7 +3,7 @@ package org.example.DiscordRequestHandlers.Commands;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.example.JsonSaveHandler;
+import org.example.FileHandler;
 import org.example.ServerInterface;
 import org.example.users.BotUser;
 
@@ -33,28 +33,28 @@ public class CommandActionHandler extends ListenerAdapter {
             return;
         }
 
-        if (delayIfUserInSystem(event.getUser().getId())){
+        if (delayIfUserInSystem(event.getUser().getName())){
             event.reply("Time Out Error, try again in few seconds").setEphemeral(true).queue();
             return;
         }
         event.deferReply(command.isEphemeral()).queue();
         if (command instanceof RegisterCommandAction){
-            command.build(null, event.getHook());
+            command.build(null, event.getHook()).queue();
             return;
         }
 
         BotUser user = getBotUser(event.getUser());
         if (user == null){
-            event.getHook().sendMessage("You are not registered. Type /registered to fix it.").setEphemeral(true).queue();
+            event.getHook().sendMessage("You are not registered. Type /register to fix it.").setEphemeral(true).queue();
             return;
         }
 
-        command.build(user, event.getHook());
+        command.build(user, event.getHook()).queue();
     }
 
-    private boolean delayIfUserInSystem(String id) {
+    private boolean delayIfUserInSystem(String name) {
         int sleepCycle = 0;
-        while (isUserInSystem(id) && sleepCycle < 40){ // for optimization can add is user registered true, bcs if he is deserialized he must be registered.
+        while (isUserInSystem(name) && sleepCycle < 40){ // for optimization can add is user registered true, bcs if he is deserialized he must be registered.
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -66,12 +66,12 @@ public class CommandActionHandler extends ListenerAdapter {
         return sleepCycle == 40;
     }
 
-    private boolean isUserInSystem(String id) {
-        return JsonSaveHandler.getInstance().isUserInSystem(id);
+    private boolean isUserInSystem(String name) {
+        return FileHandler.getInstance().isUserInSystem(name);
     }
 
     private BotUser getBotUser(User user) {
-        return JsonSaveHandler.getInstance().deserializeUser(user.getName(), user.getId());
+        return FileHandler.getInstance().deserializeUser(user.getName(), user.getId());
     }
 
     private AbstractCommandAction getCommandAction(SlashCommandInteractionEvent event) {

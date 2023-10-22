@@ -1,8 +1,8 @@
 package org.example.DiscordRequestHandlers.Commands;
 
 import org.example.HTTPHandler;
-import org.example.Stock;
-import org.example.StockPack;
+import org.example.users.Stock;
+import org.example.users.StockPack;
 
 public class GetOwnedStocksCommandAction extends CommandActionAdapter {
     public GetOwnedStocksCommandAction(String commandId) {

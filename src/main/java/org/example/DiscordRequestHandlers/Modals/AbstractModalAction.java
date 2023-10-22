@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.example.DiscordRequestHandlers.Commands.ActionResponce;
-import org.example.JsonSaveHandler;
+import org.example.FileHandler;
 import org.example.users.BotUser;
 
 import java.lang.reflect.Constructor;
@@ -50,7 +50,7 @@ public abstract class AbstractModalAction{
     protected abstract RestAction finish(ActionResponce actionResponce);
     protected abstract void clear();
     protected void serialize(){
-        JsonSaveHandler.getInstance().serializeUser(user);
+        FileHandler.getInstance().serializeUser(user);
     }
 
     public String getActionId() {

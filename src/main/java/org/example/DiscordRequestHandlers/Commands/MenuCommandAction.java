@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.example.DiscordRequestHandlers.Buttons.ButtonActionHandler;
 import org.example.SensitiveInformation;
-import org.example.Stock;
+import org.example.users.Stock;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -52,12 +52,14 @@ public class MenuCommandAction extends AbstractCommandAction {
                 .setColor(Color.red)
                 .addField("Subscribed Stocks:", sS.toString(), true)
                 .addField("Balance:", String.format("%.2f", getBotUser().getMoney()).replace(",", ".") +"$", true)
-                .addField("Subscribed Stocks:", sO.toString(), false);
+                .addField("Owned Stocks:", sO.toString(), false);
 
         Button buyButton = Button.primary("?"+"_"+"buyStockMenuB", "Buy").asEnabled();
         Button sellButton = Button.danger("?"+"_"+"sellStockMenuB", "Sell").asEnabled();
+        Button getLatestTransactionB = Button.success("?"+"_"+"getLatestTransactionB", "Latest transactions").asEnabled();
         addedComponents.add(buyButton);
         addedComponents.add(sellButton);
+        addedComponents.add(getLatestTransactionB);
         System.out.println(addedComponents);
         return ActionResponce.SUCCESS;
     }
