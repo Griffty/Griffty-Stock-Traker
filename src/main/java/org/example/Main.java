@@ -69,6 +69,7 @@ public class Main {
                 System.out.println("Cannot delete " + file.getName());
             }
         }
+        System.exit(70);
     }
 
     private static void test() {
