@@ -65,7 +65,7 @@ public class Main {
         File saveDir = new File(FileHandler.getInstance().getSaveDirectory());
 
         for (File file : Objects.requireNonNull(saveDir.listFiles())){
-            if (file.delete()){
+            if (!file.delete()){
                 System.out.println("Cannot delete " + file.getName());
             }
         }

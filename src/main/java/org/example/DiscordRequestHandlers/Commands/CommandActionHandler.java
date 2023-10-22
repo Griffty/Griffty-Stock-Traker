@@ -54,16 +54,16 @@ public class CommandActionHandler extends ListenerAdapter {
 
     private boolean delayIfUserInSystem(String name) {
         int sleepCycle = 0;
-        while (isUserInSystem(name) && sleepCycle < 40){ // for optimization can add is user registered true, bcs if he is deserialized he must be registered.
+        while (isUserInSystem(name) && sleepCycle < 20){ // for optimization can add is user registered true, bcs if he is deserialized he must be registered.
             try {
-                Thread.sleep(100);
+                Thread.sleep(80);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             sleepCycle++ ;
         }
 
-        return sleepCycle == 40;
+        return sleepCycle == 20;
     }
 
     private boolean isUserInSystem(String name) {

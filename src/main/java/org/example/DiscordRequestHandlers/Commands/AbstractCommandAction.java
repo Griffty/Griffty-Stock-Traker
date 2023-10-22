@@ -36,7 +36,6 @@ public abstract class AbstractCommandAction extends Command{
             hook.sendMessage(getBotUser() + " Sorry but something unexpected happened, contact developers for fix").queue();
             return null;
         }
-        System.out.println(response);
         serialize();
         clear();
         return response;
@@ -51,7 +50,7 @@ public abstract class AbstractCommandAction extends Command{
         options.add(answer);
     }
     protected void serialize(){
-        if (!getCommandId().equals("register")){
+        if (getCommandId().equals("register")){
             return;
         }
         if (user==null){
