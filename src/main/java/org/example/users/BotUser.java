@@ -3,6 +3,7 @@ package org.example.users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BotUser {
@@ -64,5 +65,17 @@ public class BotUser {
     @JsonIgnore
     public List<String> getAllStocksInProperty() {
         return new ArrayList<>(stocksInProperty.getAllStockSymbols());
+    }
+
+    @JsonIgnore
+    private float totalMoney = -1;
+    private long lastTotalMoneyUpdate = new Date().getTime();
+    public float getTotalMoney() {
+        if (totalMoney == -1 || lastTotalMoneyUpdate - new Date().getTime() > 1000 * 60){
+            System.out.println(".");
+            lastTotalMoneyUpdate = new Date().getTime();
+            totalMoney = stocksInProperty.getAllStockPrice() + getMoney();
+        }
+        return totalMoney;
     }
 }

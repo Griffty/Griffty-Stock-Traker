@@ -93,4 +93,25 @@ public class HTTPHandler {
         }
         return s;
     }
+
+    public float getStockPriceForStatistic(String symbol) {
+        lastSymbol = symbol;
+        HttpRequest request = HttpRequest.newBuilder(
+                        URI.create("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+symbol+"&apikey="+ALPHA_VANTAGE_APIKEY))
+                .build();
+        try {
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            float price;
+            try {
+                price = Float.parseFloat(lastResponse.body().split("4. close")[2].split(",")[0].substring(4, 10));
+            }catch (Exception e){
+                System.out.println("cannot get price for stock " + symbol + ". Trying second endpoint.");
+                return getStockPrice(symbol);
+            }
+            return price;
+        }     catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

@@ -92,6 +92,7 @@ public class ServerInterface extends ProgramInterface{
 
                 add(new SlashCommandStructure("menu", "Open user menu.", null));
                 add(new SlashCommandStructure("get_transactions", "Get list of your latest transactions", null));
+                add(new SlashCommandStructure("scoreboard", "Show latest scoreboard", null));
             }
         };
         CommandActionHandler.getInstance().registerNewCommand(new RegisterCommandAction("register"))
@@ -107,7 +108,8 @@ public class ServerInterface extends ProgramInterface{
                 .registerNewCommand(new SellStockCommandAction("sell_stock"))
 
                 .registerNewCommand(new MenuCommandAction("menu"))
-                .registerNewCommand(new GetLastTransactionsCommandAction("get_transactions"));
+                .registerNewCommand(new GetLastTransactionsCommandAction("get_transactions"))
+                .registerNewCommand(new GetLatestScoreboard("scoreboard"));
 
         ButtonActionHandler.getInstance().registerNewButtonAction(new BuyStockMenuButton("buyStockMenuB"))
                 .registerNewButtonAction(new SellStockMenuButton("sellStockMenuB"))

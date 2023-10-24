@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.users.BotUser;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class FileHandler {
     private final static List<String> usersInSystem = new ArrayList<>();
@@ -107,16 +106,20 @@ public class FileHandler {
     public BotUser deserializeUser(String name, String id){
         long t = System.currentTimeMillis();
         File selectedFile = getFileFromSaveDirectory(name, id, ".userSave");
+        BotUser botUser = deserializeUser(selectedFile);
+        usersInSystem.add(botUser.name);
+        System.out.println("Time to deserialize: " + (System.currentTimeMillis() - t));
+        return botUser;
+    }
+    public BotUser deserializeUser(File userFile){
         BotUser user;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+            BufferedReader reader = new BufferedReader(new FileReader(userFile));
             user = objectMapper.readValue(reader.readLine(), BotUser.class);
         }catch (Exception e){
             return null;
             //throw new RuntimeException("Cannot deserialize user"); //TODO: log error
         }
-        usersInSystem.add(name);
-        System.out.println("Time to deserialize: " + (System.currentTimeMillis() - t));
         return user;
     }
 
@@ -153,6 +156,28 @@ public class FileHandler {
 
         return null;
     }
+
+    public ArrayList<BotUser> deserializeAll() {
+        File directory = new File(saveDirectory);
+        File[] files = directory.listFiles();
+        if (files == null) {
+            System.out.println("Don't have any files in save directory");
+        }
+        List<File> userSaveFiles = new ArrayList<>();
+        Iterator<File> fileIterator = Arrays.stream(files).iterator();
+        while (fileIterator.hasNext()){
+            File file = fileIterator.next();
+            if (file.getName().contains(".userSave")){
+                userSaveFiles.add(file);
+            }
+        }
+        ArrayList<BotUser> allUsers = new ArrayList<>();
+        for(File userSaveFile : userSaveFiles){
+            allUsers.add(deserializeUser(userSaveFile));
+        }
+        return allUsers;
+    }
+
     public boolean isUserRegistered(String name, String id){
         return getFileFromSaveDirectory(name, id, ".userSave") != null;
     }
@@ -168,6 +193,8 @@ public class FileHandler {
     public String getSaveDirectory() {
         return saveDirectory;
     }
+
+
 //    public static String getStackTraceAsString(Exception e) {
 //        StringWriter sw = new StringWriter();
 //        PrintWriter pw = new PrintWriter(sw);

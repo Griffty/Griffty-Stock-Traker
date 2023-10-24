@@ -15,6 +15,7 @@ public class Main {
             case "console" -> ConsoleInterface.getInstance();
             case "server" -> {
                 ServerInterface.getInstance();
+                ScoreBoardHandler.getInstance();
             }
             case "test" -> test();
             default -> throw new IllegalArgumentException("Wrong argument provided - " + args[0]);
