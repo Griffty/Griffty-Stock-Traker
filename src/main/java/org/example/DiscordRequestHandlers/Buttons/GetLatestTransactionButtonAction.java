@@ -1,8 +1,7 @@
 package org.example.DiscordRequestHandlers.Buttons;
 
 import org.example.DiscordRequestHandlers.Commands.ActionResponce;
-import org.example.DiscordRequestHandlers.Commands.CommandActionHandler;
-import org.example.DiscordRequestHandlers.Commands.GetLastTransactionsCommandAction;
+import org.example.DiscordRequestHandlers.Commands.GetTransactionsCommandAction;
 
 public class GetLatestTransactionButtonAction extends ButtonCommandActionAdapter{
     public GetLatestTransactionButtonAction(String actionId) {
@@ -11,7 +10,7 @@ public class GetLatestTransactionButtonAction extends ButtonCommandActionAdapter
 
     @Override
     public ActionResponce execute() {
-        successAnswer = new GetLastTransactionsCommandAction("?");
+        successAnswer = new GetTransactionsCommandAction("?");
         return ActionResponce.SUCCESS;
     }
 

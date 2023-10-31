@@ -18,7 +18,6 @@ public class MenuCommandAction extends AbstractCommandAction {
     private final List<ItemComponent> addedComponents;
     public MenuCommandAction(String commandId) {
         super(commandId);
-        setEphemeral(true);
         addedComponents = new ArrayList<>();
     }
 
@@ -56,11 +55,10 @@ public class MenuCommandAction extends AbstractCommandAction {
 
         Button buyButton = Button.primary("?"+"_"+"buyStockMenuB", "Buy").asEnabled();
         Button sellButton = Button.danger("?"+"_"+"sellStockMenuB", "Sell").asEnabled();
-        Button getLatestTransactionB = Button.success("?"+"_"+"getLatestTransactionB", "Latest transactions").asEnabled();
+        Button getLatestTransactionB = Button.success("?"+"_"+"getLatestTransactionMenuB", "Latest transactions").asEnabled();
         addedComponents.add(buyButton);
         addedComponents.add(sellButton);
         addedComponents.add(getLatestTransactionB);
-        System.out.println(addedComponents);
         return ActionResponce.SUCCESS;
     }
 

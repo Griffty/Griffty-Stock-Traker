@@ -5,14 +5,9 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import org.example.DiscordRequestHandlers.Buttons.ButtonActionHandler;
-import org.example.DiscordRequestHandlers.Buttons.BuyStockMenuButton;
-import org.example.DiscordRequestHandlers.Buttons.GetLatestTransactionButtonAction;
-import org.example.DiscordRequestHandlers.Buttons.SellStockMenuButton;
+import org.example.DiscordRequestHandlers.Buttons.*;
 import org.example.DiscordRequestHandlers.Commands.*;
-import org.example.DiscordRequestHandlers.Modals.BuyStockModalAction;
-import org.example.DiscordRequestHandlers.Modals.ModalActionHandler;
-import org.example.DiscordRequestHandlers.Modals.SellStockModalAction;
+import org.example.DiscordRequestHandlers.Modals.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -91,8 +86,14 @@ public class ServerInterface extends ProgramInterface{
                 }));
 
                 add(new SlashCommandStructure("menu", "Open user menu.", null));
-                add(new SlashCommandStructure("get_transactions", "Get list of your latest transactions", null));
-                add(new SlashCommandStructure("scoreboard", "Show latest scoreboard", null));
+                add(new SlashCommandStructure("get_transactions", "Get list of your latest transactions.", null));
+                add(new SlashCommandStructure("scoreboard", "Show latest scoreboard.", null));
+                add(new SlashCommandStructure("invisible_massages", "changes you message visibility.", new ArrayList<>(){
+                    {
+                        add(new CommandOption(OptionType.BOOLEAN, "state", "true to make them private; false to make them public.", true, false));
+                    }
+                }));
+                add(new SlashCommandStructure("command_list", "show all possible commands", null));
             }
         };
         CommandActionHandler.getInstance().registerNewCommand(new RegisterCommandAction("register"))
@@ -108,15 +109,28 @@ public class ServerInterface extends ProgramInterface{
                 .registerNewCommand(new SellStockCommandAction("sell_stock"))
 
                 .registerNewCommand(new MenuCommandAction("menu"))
-                .registerNewCommand(new GetLastTransactionsCommandAction("get_transactions"))
-                .registerNewCommand(new GetLatestScoreboard("scoreboard"));
+                .registerNewCommand(new GetTransactionsCommandAction("get_transactions"))
+                .registerNewCommand(new GetScoreboardCommandAction("scoreboard"))
+                .registerNewCommand(new SetEphemeralMessages("invisible_massages"))
+                .registerNewCommand(new CommandsListCommandAction("command_list"));
 
         ButtonActionHandler.getInstance().registerNewButtonAction(new BuyStockMenuButton("buyStockMenuB"))
                 .registerNewButtonAction(new SellStockMenuButton("sellStockMenuB"))
-                .registerNewButtonAction(new GetLatestTransactionButtonAction("getLatestTransactionB"));
+                .registerNewButtonAction(new GetLatestTransactionButtonAction("getLatestTransactionMenuB"))
+                .registerNewButtonAction(new HelpButtonAction("helpCommandListB"))
+                .registerNewButtonAction(new LatestScoreBoardButtonAction("showScoreboardCommandListB"))
+
+                .registerNewButtonAction(new AddStockButtonAction("addSubscribedStocksCommandListB"))
+                .registerNewButtonAction(new RemoveStockButtonAction("removeSubscribedStocksCommandListB"))
+                .registerNewButtonAction(new GetStockPriceButtonAction("getStockPriceCommandListB"))
+                .registerNewButtonAction(new GetNewsButtonAction("getNewsCommandListB"));
 
         ModalActionHandler.getInstance().registerNewModalAction(new BuyStockModalAction("buyStockM", List.of("symbol", "amount")))
-                .registerNewModalAction(new SellStockModalAction("sellStockM", List.of("symbol", "amount")));
+                .registerNewModalAction(new SellStockModalAction("sellStockM", List.of("symbol", "amount")))
+                .registerNewModalAction(new AddSubscribedModalAction("addSubscribedStocksM", List.of("symbol")))
+                .registerNewModalAction(new RemoveSubscribedModalAction("removeSubscribedStocksM", List.of("symbol")))
+                .registerNewModalAction(new GetStockModalAction("getStockPriceM", List.of("symbol")))
+                .registerNewModalAction(new GetNewsModalAction("getNewsM", List.of("symbol", "amount")));
     }
     public List<CommandOption> getOptionsForCommand(String commandId){
         for (SlashCommandStructure structure : supportedResponseCommands){

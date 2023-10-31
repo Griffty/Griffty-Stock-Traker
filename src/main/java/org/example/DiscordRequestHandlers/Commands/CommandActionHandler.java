@@ -3,12 +3,14 @@ package org.example.DiscordRequestHandlers.Commands;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.example.FileHandler;
 import org.example.ServerInterface;
 import org.example.users.BotUser;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 public class CommandActionHandler extends ListenerAdapter {
     private static CommandActionHandler self;
@@ -37,18 +39,18 @@ public class CommandActionHandler extends ListenerAdapter {
             event.reply("Time Out Error, try again in few seconds").setEphemeral(true).queue();
             return;
         }
-        event.deferReply(command.isEphemeral()).queue();
-        if (command instanceof RegisterCommandAction){
-            command.build(null, event.getHook()).queue();
-            return;
-        }
 
         BotUser user = getBotUser(event.getUser());
         if (user == null){
+            event.deferReply().queue();
+            if (command instanceof RegisterCommandAction){
+                command.build(null, event.getHook()).queue();
+                return;
+            }
             event.getHook().sendMessage("You are not registered. Type /register to fix it.").setEphemeral(true).queue();
             return;
         }
-
+        event.deferReply(user.isEphemeralMessages()).queue();
         command.build(user, event.getHook()).queue();
     }
 
@@ -89,7 +91,15 @@ public class CommandActionHandler extends ListenerAdapter {
         if (responseCommand != null){
             if (options != null){
                 for (CommandOption option : options) {
-                    responseCommand.addOptionAnswers(new CommandOptionAnswer(option.getOptionType(), option.getOptionID(), event.getOption(option.getOptionID())));
+                    Object object;
+                    OptionMapping mapping = event.getOption(option.getOptionID());
+                    switch (option.getOptionType()){
+                        case STRING -> object = Objects.requireNonNull(mapping).getAsString();
+                        case INTEGER -> object = Objects.requireNonNull(mapping).getAsInt();
+                        case BOOLEAN -> object = Objects.requireNonNull(mapping).getAsBoolean();
+                        default -> throw new RuntimeException("Cannot use this type as Option answer");
+                    }
+                    responseCommand.addOptionAnswers(new OptionAnswer(option.getOptionType(), option.getOptionID(), object));
                 }
             }
             return responseCommand;

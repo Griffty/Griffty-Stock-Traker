@@ -90,7 +90,6 @@ public class ButtonActionHandler extends ListenerAdapter { // I can make it as a
         List<ItemComponent> row = new ArrayList<>();
         for (int i = 0; i < components.size(); i++){
             if (i % 5 == 0 && i != 0){
-                System.out.println(row);
                 messageCreateAction.addActionRow(row);
                 row.clear();
             }

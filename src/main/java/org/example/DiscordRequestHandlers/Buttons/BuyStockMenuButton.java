@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.example.DiscordRequestHandlers.Commands.ActionResponce;
 
+import java.util.List;
+
 public class BuyStockMenuButton extends ButtonModalActionAdapter {
 
     public BuyStockMenuButton(String actionId) {
@@ -13,11 +15,9 @@ public class BuyStockMenuButton extends ButtonModalActionAdapter {
     }
     @Override
     public ActionResponce execute() {
-        TextInput symbolTextInput = TextInput.create("symbol", "Stock ticker", TextInputStyle.SHORT).setRequired(true).setPlaceholder("AAPL, AMZN, F, etc.").build();
-        TextInput amountTextInput = TextInput.create("amount", "Amount you want to buy", TextInputStyle.SHORT).setRequired(true).setPlaceholder("10, 2, 18, etc.").build();
-
-        successAnswer = Modal.create("?_buyStockM", "Buy Stock").addComponents(ActionRow.of(symbolTextInput), ActionRow.of(amountTextInput)).build();
-        return ActionResponce.SUCCESS;
+        successAnswer = createBasicModal("buyStockM", "Buy Stock",
+                List.of(createBasicTextInput("symbol", "Stock ticker", TextInputStyle.SHORT, "AAPL, AMZN, F, etc.", true),
+                        createBasicTextInput("amount", "\"Amount you want to buy", TextInputStyle.SHORT, "10, 2, 18, etc.", true)));
+       return ActionResponce.SUCCESS;
     }
-
 }

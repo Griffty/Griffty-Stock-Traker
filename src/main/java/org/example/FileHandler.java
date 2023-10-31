@@ -107,6 +107,9 @@ public class FileHandler {
         long t = System.currentTimeMillis();
         File selectedFile = getFileFromSaveDirectory(name, id, ".userSave");
         BotUser botUser = deserializeUser(selectedFile);
+        if(botUser == null){
+            return null;
+        }
         usersInSystem.add(botUser.name);
         System.out.println("Time to deserialize: " + (System.currentTimeMillis() - t));
         return botUser;

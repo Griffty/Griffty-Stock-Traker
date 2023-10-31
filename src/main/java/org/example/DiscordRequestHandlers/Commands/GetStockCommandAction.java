@@ -9,7 +9,7 @@ public class GetStockCommandAction extends CommandActionAdapter {
 
     @Override
     public ActionResponce execute() {
-        String priceInfo = HTTPHandler.getInstance().getShortStockPriceInfo(getOptions().get(0).getValue().getAsString());
+        String priceInfo = HTTPHandler.getInstance().getShortStockPriceInfo(getOption("symbol").getAsString());
         successAnswer = priceInfo;
         failAnswer = priceInfo;
         if (priceInfo.contains("Cannot")){

@@ -3,8 +3,11 @@ package org.example.DiscordRequestHandlers.Modals;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.modals.ModalMapping;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.example.DiscordRequestHandlers.Commands.ActionResponce;
+import org.example.DiscordRequestHandlers.Commands.OptionAnswer;
 import org.example.FileHandler;
 import org.example.users.BotUser;
 
@@ -18,7 +21,7 @@ public abstract class AbstractModalAction{
     private ModalInteractionEvent event;
     protected ActionResponce actionResponce;
     private final List<String> requiredOptions;
-    private final List<ModalOptionAnswer> option = new ArrayList<>();
+    private final List<OptionAnswer> options = new ArrayList<>();
 
     protected AbstractModalAction(String actionId, List<String> requiredOptions) {
         this.actionId = actionId;
@@ -56,11 +59,9 @@ public abstract class AbstractModalAction{
     public String getActionId() {
         return actionId;
     }
-
     protected BotUser getBotUser() {
         return user;
     }
-
     protected InteractionHook getInteractionHook() {
         return event.getHook();
     }
@@ -73,17 +74,16 @@ public abstract class AbstractModalAction{
     protected void setUser(BotUser user) {
         this.user = user;
     }
-
     public void setEvent(ModalInteractionEvent event) {
         this.event = event;
     }
     protected String pingUser(){
         return "<@" + getBotUser().discordId + "> ";
     }
-    protected String getOption(String optionId){
-        for (ModalOptionAnswer answer : option){
-            if (optionId.equals(answer.optionID())){
-                return answer.value();
+    protected OptionAnswer getOption(String optionId){
+        for (OptionAnswer answer : options){
+            if (optionId.equals(answer.getOptionID())){
+                return answer;
             }
         }
         return null;
@@ -98,7 +98,7 @@ public abstract class AbstractModalAction{
         }
     }
 
-    public void addOptionAnswer(ModalOptionAnswer modalOptionAnswer) {
-        option.add(modalOptionAnswer);
+    public void addOptionAnswer(OptionAnswer modalOptionAnswer) {
+        options.add(modalOptionAnswer);
     }
 }

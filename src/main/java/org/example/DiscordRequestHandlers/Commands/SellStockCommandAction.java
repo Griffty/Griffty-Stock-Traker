@@ -11,8 +11,8 @@ public class SellStockCommandAction extends CommandActionAdapter {
 
     @Override
     public ActionResponce execute() {
-        String symbol = getOptions().get(0).getValue().getAsString();
-        int amount = getOptions().get(1).getValue().getAsInt();
+        String symbol = getOption("symbol").getAsString();
+        int amount = getOption("amount").getAsInteger();
 
         int ans = TradeHandler.getInstance().sellStock(getBotUser(), new Stock(symbol, amount));
         if (ans == -3){

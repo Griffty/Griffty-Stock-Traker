@@ -1,12 +1,16 @@
 package org.example.DiscordRequestHandlers.Modals;
 
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.example.DiscordRequestHandlers.Commands.ActionResponce;
+import org.example.DiscordRequestHandlers.Commands.BuyStockCommandAction;
+import org.example.DiscordRequestHandlers.Commands.OptionAnswer;
+import org.example.DiscordRequestHandlers.Commands.SellStockCommandAction;
 import org.example.users.Stock;
 import org.example.TradeHandler;
 
 import java.util.List;
 
-public class BuyStockModalAction extends ModalActionAdapter{
+public class BuyStockModalAction extends ModalCommandActionAdapter{
 
     public BuyStockModalAction(String actionId, List<String> requiredOptions) {
         super(actionId, requiredOptions);
@@ -14,19 +18,12 @@ public class BuyStockModalAction extends ModalActionAdapter{
 
     @Override
     public ActionResponce execute() {
-        String symbol = getOption("symbol");
-        int amount = Integer.parseInt(getOption("amount"));
+        String symbol = getOption("symbol").getAsString();
+        String amount = getOption("amount").getAsString();
 
-        int ans = TradeHandler.getInstance().buyStock(getBotUser(), new Stock(symbol, amount));
-        if (ans == -2){
-            failAnswer = "Something went wrong, check if you use right ticker.";
-            return ActionResponce.FAIL;
-        }
-        if (ans == -1){
-            noActionAnswer = "You don't have enough money.";
-            return ActionResponce.NO_ACTION;
-        }
-        successAnswer = "Deal finished. Now you have " + getBotUser().getStockInProperty(symbol).getAmount() + " " + symbol;
+        successAnswer = new BuyStockCommandAction("?")
+                .addOptionAnswers(new OptionAnswer(OptionType.STRING, "symbol", symbol))
+                .addOptionAnswers(new OptionAnswer(OptionType.INTEGER, "amount", amount));
         return ActionResponce.SUCCESS;
     }
 }

@@ -9,7 +9,7 @@ public class AddSubscribedStockCommandAction extends CommandActionAdapter {
 
     @Override
     public ActionResponce execute() {
-        String symbol = getOptions().get(0).getValue().getAsString().toUpperCase();
+        String symbol = getOption("symbol").getAsString();
         if (HTTPHandler.getInstance().sendCompanyInfoRequest(symbol).body().contains("Cannot")){
             failAnswer = "Something went wrong, check if you entered correct stock.";
             return ActionResponce.FAIL;

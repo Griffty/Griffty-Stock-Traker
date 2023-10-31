@@ -1,7 +1,14 @@
 package org.example;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class SensitiveInformation {
-    public static final String DiscordBotToken = API_TOKENS.DiscordBotToken;
+    public static String ALPHA_VANTAGE_APIKEY;
+    public static String RAPID_APIKEY;
+    public static String DiscordBotToken;
     public static final String WindowsSaveDir = "C:\\Users\\Griffty\\Desktop\\my\\work\\coding\\Java\\StockTracker\\TempSave";
     public static final String LinuxSaveDir = "/home/griffty/JavaWork/StockTracker/save";
     public static String helpInfo = """
@@ -30,4 +37,22 @@ public class SensitiveInformation {
             > :notebook_with_decorative_cover: Stay informed, trade wisely, and always keep exploring!
             """;
     public static String menuDescription = "Here you can see all information about your account. Don't worry, you are only one who can see this message. Also you can perform some other actions using buttons below.";
+
+
+    public static void loadKeyAndTokens(){
+        try {
+            readKeys();
+        }catch (Exception e){
+         throw new RuntimeException("Cannot read API keys. Stopping");
+        }
+    }
+    public static void readKeys() throws IOException {
+        DiscordBotToken = readFileContent("BotToken.txt");
+        RAPID_APIKEY = readFileContent("RapidKey.txt");
+        ALPHA_VANTAGE_APIKEY = readFileContent("AlphaVantageKey.txt");
+    }
+
+    private static String readFileContent(String filePath) throws IOException {
+        return Files.readString(Paths.get(filePath)).trim();
+    }
 }

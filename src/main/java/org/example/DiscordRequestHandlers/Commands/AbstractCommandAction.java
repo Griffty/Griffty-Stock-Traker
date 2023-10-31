@@ -15,8 +15,7 @@ public abstract class AbstractCommandAction extends Command{
     private BotUser user;
     private InteractionHook hook;
     private ActionResponce actionResponce;
-    private final List<CommandOptionAnswer> options = new ArrayList<>();
-    private boolean ephemeral = false;
+    private final List<OptionAnswer> options = new ArrayList<>();
     public AbstractCommandAction(String commandId) {
         super(commandId);
     }
@@ -42,12 +41,11 @@ public abstract class AbstractCommandAction extends Command{
     }
     public abstract ActionResponce execute();
     protected abstract RestAction<Message> finish(ActionResponce actionResponce);
-    /**
-     * @override Need to add user serialization*/
     protected abstract void clear();
 
-    public void addOptionAnswers(CommandOptionAnswer answer){
+    public AbstractCommandAction addOptionAnswers(OptionAnswer answer){
         options.add(answer);
+        return this;
     }
     protected void serialize(){
         if (getCommandId().equals("register")){
@@ -60,10 +58,6 @@ public abstract class AbstractCommandAction extends Command{
         FileHandler.getInstance().serializeUser(user);
     }
 
-    protected boolean isEphemeral() {
-        return ephemeral;
-    }
-
     protected BotUser getBotUser() {
         return user;
     }
@@ -72,7 +66,7 @@ public abstract class AbstractCommandAction extends Command{
         return hook;
     }
 
-    protected List<CommandOptionAnswer> getOptions() {
+    protected List<OptionAnswer> getOptions() {
         return options;
     }
 
@@ -80,12 +74,17 @@ public abstract class AbstractCommandAction extends Command{
         this.user = user;
     }
 
-    protected void setEphemeral(boolean ephemeral) {
-        this.ephemeral = ephemeral;
-    }
-
     protected String pingUser(){
         return "<@" + getBotUser().discordId + "> ";
+    }
+
+    protected OptionAnswer getOption(String optionId){
+        for (OptionAnswer answer : options){
+            if (optionId.equals(answer.getOptionID())){
+                return answer;
+            }
+        }
+        return null;
     }
 
     public AbstractCommandAction createCopy() {

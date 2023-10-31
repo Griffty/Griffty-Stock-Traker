@@ -3,10 +3,15 @@ package org.example.DiscordRequestHandlers.Modals;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.modals.ModalMapping;
+import org.example.DiscordRequestHandlers.Commands.OptionAnswer;
 import org.example.FileHandler;
 import org.example.users.BotUser;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 public class ModalActionHandler extends ListenerAdapter {
     private static ModalActionHandler self;
@@ -71,7 +76,6 @@ public class ModalActionHandler extends ListenerAdapter {
         AbstractModalAction responseAction = null;
         String modalId = event.getModalId().split("_")[1];
         for(AbstractModalAction action : abstractModalActions) {
-            System.out.println(action.getActionId() + " " +modalId);
             if (action.getActionId().equals(modalId)) {
                 responseAction = action.createCopy();
                 break;
@@ -84,8 +88,8 @@ public class ModalActionHandler extends ListenerAdapter {
             return responseAction;
         }
         for(String option : responseAction.getRequiredOptions()){
-            String answer = event.getValue(option).getAsString();
-            responseAction.addOptionAnswer(new ModalOptionAnswer(option, answer));
+            String answer = Objects.requireNonNull(event.getValue(option)).getAsString();
+            responseAction.addOptionAnswer(new OptionAnswer(OptionType.STRING, option, answer));
         }
 
         return responseAction;

@@ -4,11 +4,10 @@ import org.example.TransactionLogger;
 
 import java.util.ArrayList;
 
-public class GetLastTransactionsCommandAction extends CommandActionAdapter{
+public class GetTransactionsCommandAction extends CommandActionAdapter{
 
-    public GetLastTransactionsCommandAction(String commandId) {
+    public GetTransactionsCommandAction(String commandId) {
         super(commandId);
-        setEphemeral(true);
     }
 
     @Override

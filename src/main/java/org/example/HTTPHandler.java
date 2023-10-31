@@ -10,8 +10,8 @@ public class HTTPHandler {
     private String lastSymbol;
     private HttpResponse<String> lastResponse;
     private final HttpClient client;
-    public final String ALPHA_VANTAGE_APIKEY = API_TOKENS.ALPHA_VANTAGE_APIKEY;
-    public final String RAPID_APIKEY = API_TOKENS.RAPID_APIKEY;
+    public final String ALPHA_VANTAGE_APIKEY = SensitiveInformation.ALPHA_VANTAGE_APIKEY;
+    public final String RAPID_APIKEY = SensitiveInformation.RAPID_APIKEY;
 
     public static HTTPHandler getInstance() {
         if (self != null){

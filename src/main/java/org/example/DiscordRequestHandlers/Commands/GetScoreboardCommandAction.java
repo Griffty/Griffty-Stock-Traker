@@ -5,8 +5,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.example.ScoreBoardHandler;
 
-public class GetLatestScoreboard extends AbstractCommandAction{
-    public GetLatestScoreboard(String commandId) {
+public class GetScoreboardCommandAction extends AbstractCommandAction{
+    public GetScoreboardCommandAction(String commandId) {
         super(commandId);
     }
     private MessageEmbed embed;

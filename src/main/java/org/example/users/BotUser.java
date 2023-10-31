@@ -12,6 +12,7 @@ public class BotUser {
     public ArrayList<String> subscribedStocks;
     private StockPack stocksInProperty = new StockPack();
     private float money = 0;
+    private boolean ephemeralMessages = true;
     public BotUser(){
     }
     public BotUser(String discordId, String name){
@@ -60,6 +61,14 @@ public class BotUser {
     }
     public void setStocksInProperty(StockPack stocks) {
         stocksInProperty = stocks;
+    }
+
+    public boolean isEphemeralMessages() {
+        return ephemeralMessages;
+    }
+
+    public void setEphemeralMessages(boolean ephemeralMessages) {
+        this.ephemeralMessages = ephemeralMessages;
     }
 
     @JsonIgnore

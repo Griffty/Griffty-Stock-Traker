@@ -10,6 +10,7 @@ public class RegisterCommandAction extends CommandActionAdapter {
     @Override
     public ActionResponce execute() {
         setUser(new BotUser(getInteractionHook().getInteraction().getUser().getId(), getInteractionHook().getInteraction().getUser().getName()));
+        getBotUser().setMoney(getBotUser().getMoney()+1000);
         int answer = FileHandler.getInstance().registerNewUser(getBotUser());
         if (answer == 1){
             successAnswer = "Hooray, you just registered.";

@@ -11,7 +11,7 @@ public class GetNewsCommandAction extends CommandActionAdapter {
 
     @Override
     public ActionResponce execute() {
-        ArrayList<String> newsList = WebScraper.getNewsForSpecificSymbol(getOptions().get(0).getValue().getAsString(), getOptions().get(1).getValue().getAsInt());
+        ArrayList<String> newsList = WebScraper.getNewsForSpecificSymbol(getOption("symbol").getAsString(), getOption("amount").getAsInteger());
         StringBuilder s = new StringBuilder();
         for (String article : newsList){
             s.append(article).append(",\n");

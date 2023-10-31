@@ -7,7 +7,7 @@ public class RemoveSubscribedStockCommandAction extends CommandActionAdapter {
 
     @Override
     public ActionResponce execute() {
-        String symbol = getOptions().get(0).getValue().getAsString().toUpperCase();
+        String symbol = getOption("symbol").getAsString();
         if (!getBotUser().subscribedStocks.contains(symbol)){
             failAnswer = "Can't remove this stock, because you are not subscribed to it.";
             return ActionResponce.FAIL;
