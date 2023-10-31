@@ -10,8 +10,8 @@ public class HTTPHandler {
     private String lastSymbol;
     private HttpResponse<String> lastResponse;
     private final HttpClient client;
-    public final String ALPHA_VANTAGE_APIKEY = API_TOKENS.ALPHA_VANTAGE_APIKEY;
-    public final String RAPID_APIKEY = API_TOKENS.RAPID_APIKEY;
+    public final String ALPHA_VANTAGE_APIKEY = SensitiveInformation.ALPHA_VANTAGE_APIKEY;
+    public final String RAPID_APIKEY = SensitiveInformation.RAPID_APIKEY;
 
     public static HTTPHandler getInstance() {
         if (self != null){
@@ -92,5 +92,26 @@ public class HTTPHandler {
             s = "Cannot get stock price for this symbol";
         }
         return s;
+    }
+
+    public float getStockPriceForStatistic(String symbol) {
+        lastSymbol = symbol;
+        HttpRequest request = HttpRequest.newBuilder(
+                        URI.create("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+symbol+"&apikey="+ALPHA_VANTAGE_APIKEY))
+                .build();
+        try {
+            lastResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            float price;
+            try {
+                price = Float.parseFloat(lastResponse.body().split("4. close")[2].split(",")[0].substring(4, 10));
+            }catch (Exception e){
+                System.out.println("cannot get price for stock " + symbol + ". Trying second endpoint.");
+                return getStockPrice(symbol);
+            }
+            return price;
+        }     catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

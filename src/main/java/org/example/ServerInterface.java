@@ -5,7 +5,9 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import org.example.DiscordRequestHandlers.*;
+import org.example.DiscordRequestHandlers.Buttons.*;
+import org.example.DiscordRequestHandlers.Commands.*;
+import org.example.DiscordRequestHandlers.Modals.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,42 +35,14 @@ public class ServerInterface extends ProgramInterface{
             commandData.add(data);
         }
         api.updateCommands().addCommands(commandData).queue();
-        api.addEventListener(CommandHandler.getInstance());
-//        api.updateCommands().addCommands(
-//                Commands.slash("register", "Register yourself in a system."),
-//                Commands.slash("stock_help", "Get help in using me."),
-//
-//                Commands.slash("subscribed_stocks", "Shows prices of all stocks you are subscribed to."),
-//                Commands.slash("add_stock", "Adds stock to your subscription list.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to add.", true),
-//                Commands.slash("remove_stock", "Removes stock from your subscription list.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to remove.", true, true),
-//
-//                Commands.slash("owned_stocks", "Shows list of all stocks you have in property."),
-//                Commands.slash("buy_stock", "Buy some stocks.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to buy.", true)
-//                        .addOption(OptionType.INTEGER, "amount", "How much stock you want to buy.", true),
-//                Commands.slash("sell_stock", "Sell some stocks.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to sell.", true, true)
-//                        .addOption(OptionType.INTEGER, "amount", "How much stock you want to sell.", true, true),
-//
-//                Commands.slash("get_stock", "Shows price of specified stock.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to check.", true),
-//                Commands.slash("stock_news", "Show last news about specific stock.")
-//                        .addOption(OptionType.STRING, "symbol", "Symbol of a stock that you want to check.", true)
-//                        .addOption(OptionType.STRING, "amount", "How many articles you want to get.", true),
-//                Commands.slash("admin", "admin commands").
-//                        addOption(OptionType.STRING, "parameters", "admin parameters", true),
-//
-//                Commands.slash("get_money", "Show current money.")
-//                ).queue();
+        api.addEventListener(CommandActionHandler.getInstance());
+        api.addEventListener(ButtonActionHandler.getInstance());
+        api.addEventListener(ModalActionHandler.getInstance());
     }
 
     private void createCommands() {
         supportedResponseCommands = new HashSet<>(){
             {
-                add(new SlashCommandStructure("menu", "Open user menu.", null));
-
                 add(new SlashCommandStructure("register", "Register yourself in a system.", null));
                 add(new SlashCommandStructure("help", "Get help in using me.", null));
                 add(new SlashCommandStructure("get_money", "shows current money", null));
@@ -110,21 +84,53 @@ public class ServerInterface extends ProgramInterface{
                         add(new CommandOption(OptionType.INTEGER, "amount", "How much you want to sell.", true, false));
                     }
                 }));
+
+                add(new SlashCommandStructure("menu", "Open user menu.", null));
+                add(new SlashCommandStructure("get_transactions", "Get list of your latest transactions.", null));
+                add(new SlashCommandStructure("scoreboard", "Show latest scoreboard.", null));
+                add(new SlashCommandStructure("invisible_massages", "changes you message visibility.", new ArrayList<>(){
+                    {
+                        add(new CommandOption(OptionType.BOOLEAN, "state", "true to make them private; false to make them public.", true, false));
+                    }
+                }));
+                add(new SlashCommandStructure("command_list", "show all possible commands", null));
             }
         };
-        CommandHandler.getInstance().registerNewCommand(new RegisterCommand("register"))
-                .registerNewCommand(new HelpCommand("help"))
-                .registerNewCommand(new GetMoneyCommand("get_money"))
-                .registerNewCommand(new GetStockCommand("get_stock"))
-                .registerNewCommand(new GetNewsCommand("stock_news"))
-                .registerNewCommand(new GetSubscribedStocksCommand("subscribed_stocks"))
-                .registerNewCommand(new AddSubscribedStockCommand("add_stock"))
-                .registerNewCommand(new RemoveSubscribedStockCommand("remove_stock"))
-                .registerNewCommand(new GetOwnedStocksCommand("owned_stocks"))
-                .registerNewCommand(new BuyStockCommand("buy_stock"))
-                .registerNewCommand(new SellStockCommand("sell_stock"))
+        CommandActionHandler.getInstance().registerNewCommand(new RegisterCommandAction("register"))
+                .registerNewCommand(new HelpCommandAction("help"))
+                .registerNewCommand(new GetMoneyCommandAction("get_money"))
+                .registerNewCommand(new GetStockCommandAction("get_stock"))
+                .registerNewCommand(new GetNewsCommandAction("stock_news"))
+                .registerNewCommand(new GetSubscribedStocksCommandAction("subscribed_stocks"))
+                .registerNewCommand(new AddSubscribedStockCommandAction("add_stock"))
+                .registerNewCommand(new RemoveSubscribedStockCommandAction("remove_stock"))
+                .registerNewCommand(new GetOwnedStocksCommandAction("owned_stocks"))
+                .registerNewCommand(new BuyStockCommandAction("buy_stock"))
+                .registerNewCommand(new SellStockCommandAction("sell_stock"))
 
-                .registerNewCommand(new MenuCommand("menu"));
+                .registerNewCommand(new MenuCommandAction("menu"))
+                .registerNewCommand(new GetTransactionsCommandAction("get_transactions"))
+                .registerNewCommand(new GetScoreboardCommandAction("scoreboard"))
+                .registerNewCommand(new SetEphemeralMessages("invisible_massages"))
+                .registerNewCommand(new CommandsListCommandAction("command_list"));
+
+        ButtonActionHandler.getInstance().registerNewButtonAction(new BuyStockMenuButton("buyStockMenuB"))
+                .registerNewButtonAction(new SellStockMenuButton("sellStockMenuB"))
+                .registerNewButtonAction(new GetLatestTransactionButtonAction("getLatestTransactionMenuB"))
+                .registerNewButtonAction(new HelpButtonAction("helpCommandListB"))
+                .registerNewButtonAction(new LatestScoreBoardButtonAction("showScoreboardCommandListB"))
+
+                .registerNewButtonAction(new AddStockButtonAction("addSubscribedStocksCommandListB"))
+                .registerNewButtonAction(new RemoveStockButtonAction("removeSubscribedStocksCommandListB"))
+                .registerNewButtonAction(new GetStockPriceButtonAction("getStockPriceCommandListB"))
+                .registerNewButtonAction(new GetNewsButtonAction("getNewsCommandListB"));
+
+        ModalActionHandler.getInstance().registerNewModalAction(new BuyStockModalAction("buyStockM", List.of("symbol", "amount")))
+                .registerNewModalAction(new SellStockModalAction("sellStockM", List.of("symbol", "amount")))
+                .registerNewModalAction(new AddSubscribedModalAction("addSubscribedStocksM", List.of("symbol")))
+                .registerNewModalAction(new RemoveSubscribedModalAction("removeSubscribedStocksM", List.of("symbol")))
+                .registerNewModalAction(new GetStockModalAction("getStockPriceM", List.of("symbol")))
+                .registerNewModalAction(new GetNewsModalAction("getNewsM", List.of("symbol", "amount")));
     }
     public List<CommandOption> getOptionsForCommand(String commandId){
         for (SlashCommandStructure structure : supportedResponseCommands){

@@ -22,21 +22,21 @@ public class AdminHelper {
     }
 
     private static void giveMoney(String parameter, String parameter1, SlashCommandInteractionEvent event) {
-        if (JsonSaveHandler.getInstance().isUserRegistered(parameter, "?")){
-            BotUser user = JsonSaveHandler.getInstance().deserializeUser(parameter, "?");
+        if (FileHandler.getInstance().isUserRegistered(parameter, "?")){
+            BotUser user = FileHandler.getInstance().deserializeUser(parameter, "?");
             user.setMoney(user.getMoney() + Float.parseFloat(parameter1));
             event.getHook().sendMessage("Current money: " + user.getMoney()).queue();
-            JsonSaveHandler.getInstance().serializeUser(user);
+            FileHandler.getInstance().serializeUser(user);
             return;
         }
         event.getHook().sendMessage("Cannot find user").queue();
     }
     private static void removeMoney(String parameter, String parameter1, SlashCommandInteractionEvent event) {
-        if (JsonSaveHandler.getInstance().isUserRegistered(parameter, "?")){
-            BotUser user = JsonSaveHandler.getInstance().deserializeUser(parameter, "?");
+        if (FileHandler.getInstance().isUserRegistered(parameter, "?")){
+            BotUser user = FileHandler.getInstance().deserializeUser(parameter, "?");
             user.setMoney(user.getMoney() - Float.parseFloat(parameter1));
             event.getHook().sendMessage("Current money: " + user.getMoney()).queue();
-            JsonSaveHandler.getInstance().serializeUser(user);
+            FileHandler.getInstance().serializeUser(user);
             return;
         }
         event.getHook().sendMessage("Cannot find user").queue();

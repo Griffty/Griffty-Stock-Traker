@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.users.BotUser;
+import org.example.users.Stock;
 
 public class TradeHandler {
     private static TradeHandler self;
@@ -13,9 +14,10 @@ public class TradeHandler {
     private TradeHandler(){
 
     }
+
     public int buyStock(BotUser user, Stock stock){
-        float stockPrice = HTTPHandler.getInstance().getStockPrice(stock.symbol);
-        float totalPrice = stock.amount * stockPrice;
+        float stockPrice = HTTPHandler.getInstance().getStockPrice(stock.getSymbol());
+        float totalPrice = stock.getAmount() * stockPrice;
         if (stockPrice == -1){
             return -2;
         }
@@ -24,20 +26,26 @@ public class TradeHandler {
         }
 
         user.setMoney(user.getMoney() - totalPrice);
+        TransactionLogger.getInstance().logTransaction(user, stock, stockPrice, true);
         return user.AddStocksToProperty(stock);
     }
     public int sellStock(BotUser user, Stock stock){
-        float stockPrice = HTTPHandler.getInstance().getStockPrice(stock.symbol);
-        float currentAmount = user.getStockInProperty(stock.symbol).amount;
+        float stockPrice = HTTPHandler.getInstance().getStockPrice(stock.getSymbol());
+        Stock stockInPack = user.getStockInProperty(stock.getSymbol());
+        if (stockInPack == null){
+            return -3;
+        }
+        float currentAmount = stockInPack.getAmount();
         if (stockPrice == -1){
             return -2;
         }
-        if (currentAmount < stock.amount){
+        if (currentAmount < stock.getAmount()){
             return -1;
         }
 
-        float totalPrice = stock.amount * stockPrice;
+        float totalPrice = stock.getAmount() * stockPrice;
         user.setMoney(user.getMoney() + totalPrice);
+        TransactionLogger.getInstance().logTransaction(user, stock, stockPrice, false);
         return user.RemoveStocksFromProperty(stock);
     }
 }
