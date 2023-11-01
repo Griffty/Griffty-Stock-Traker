@@ -1,5 +1,7 @@
 # CATS Stock Traker
-<img src="https://i.imgur.com/wblkkIK.png" alt="Logo" width="400" height="300"/>
+<p align="center">
+  <img src="https://i.imgur.com/wblkkIK.png" alt="Logo" width="400" height="300"/>
+</p>
 ## Introduction
 CATS Stock Tracker is a program that has two main purposes. First, it's a pretty simple but useful trading tool that can be used separately just for some assistance, like a virtual portfolio and fast data updates. The second main purpose of this app is to give everyone a chance to practice trading, but by giving them a virtual account with fake money that they can spend on fake (real-priced) stock, they will get the experience of real trading. As we have just a small team of 4 people, we had no time to build an outstanding frontend interface, so our main platform for now is Discord.
 
